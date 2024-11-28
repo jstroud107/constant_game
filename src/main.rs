@@ -42,46 +42,51 @@ fn iter_agg(v:u32)-> u32{
 
 fn main() {
 
-    let mut count = 1;
-    
-    //This is where you enter the number
-    //The first numbers can not be 0
-    println!("Enter your number: ");
+    'outer: loop {
 
-    let mut entered_number = String::new();
+        let mut count = 1;
+        
+        //This is where you enter the number
+        //The first numbers can not be 0
+        println!("Enter your 4 digit number. DO NOT START WITH 0: ");
 
-    io::stdin()
-        .read_line(&mut entered_number)
-        .expect("Failed to enter correct information");
+        let mut entered_number = String::new();
 
-    //Going to have to do a match or something so this doesn't crash
-    let mut entered_number: u32 = entered_number.trim().parse().expect("You have to enter a number!");
+        io::stdin()
+            .read_line(&mut entered_number)
+            .expect("Failed to enter correct information");
 
-    loop {    
+        let mut entered_number: u32 = match entered_number.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue 'outer,
+        };
 
-        //Make an if statement to get the length of the numbers if it is over four or under redo
-        //Make it where you can't start off with a 0
+        'inner: loop {    
 
-        //If they do not enter numbers or the correct amount or letters than have it ask again
-        println!("This is your starting number: {}", entered_number);
+            //Make an if statement to get the length of the numbers if it is over four or under redo
+            //Make it where you can't start off with a 0
 
-        entered_number = iter_agg(entered_number);
+            //If they do not enter numbers or the correct amount or letters than have it ask again
+            println!("This is your starting number: {}", entered_number);
 
-        //This section has to keep repeating itself until it gets the right iteration
+            entered_number = iter_agg(entered_number);
 
-        println!("{}", entered_number);
+            //This section has to keep repeating itself until it gets the right iteration
 
-        //This is the end of the iteration part which I'm going to make into a function
+            println!("{}", entered_number);
 
-        if entered_number == CONSTANT {
-            //This is going to show how many times it took for it to be right
-            println!("It took this many iterations {}", count);
-            break;
-        } else {
-            println!("This is iteration {}", count);
-            count += 1;
-            continue;
-        }
+            //This is the end of the iteration part which I'm going to make into a function
+
+            if entered_number == CONSTANT {
+                //This is going to show how many times it took for it to be right
+                println!("It took this many iterations {}", count);
+                continue 'outer;
+            } else {
+                println!("This is iteration {}", count);
+                count += 1;
+                continue 'inner;
+            }
+        };
     };
 
 }
