@@ -5,7 +5,21 @@ use std::io;
 //loop this until you want to exit
 
 //This is the constant
-    const CONSTANT: u16 = 6174;
+const CONSTANT: u16 = 6174;
+
+//This breaks the number into a vector to get the high and low digits
+fn breaking(n:u16) -> Vec<u32> {
+    n.to_string()
+        .chars()
+        .map(|c| c.to_digit(10).unwrap())
+        .collect()
+}
+
+fn combining(n:Vec<u32>) -> String {
+    n.into_iter()
+        .map(|c| std::char::from_digit(c,10).unwrap())
+        .collect()
+}
 
 fn main() {
 
@@ -26,26 +40,23 @@ fn main() {
             Err(_) => continue,
         };
 
+        //Make an if statement to get the length of the numbers if it is over four or under redo
+        //Make it where you can't start off with a 0
+
         //If they do not enter numbers or the correct amount or letters than have it ask again
         println!("This is your starting number: {}", entered_number);
 
-        let cutup = entered_number.to_string();
-        let digits: Vec<char> = cutup.chars().collect();
+        let mut high = breaking(entered_number);
+        high.sort_by(|a,b| b.cmp(a));
 
-        println!("{:?}", digits);        
+        let mut low = breaking(entered_number);
+        low.sort_by(|a,b| a.cmp(b));
 
-        //let great = digits.clone().sort();
-        // let least = digits.clone().reverse();
+        let x = combining(high);
+        let y = combining(low);
 
-        // println!("{:?}", great);
-        // println!("{:?}", least);
-
-
-        let num_one = digits[0] as u16;
-        let num_two = digits[1] as u16;
-        let num_three = digits[2] as u16;
-        let num_four = digits[3] as u16;
-
+        println!("{}", x);
+        println!("{}", y);
 
 
         if entered_number == CONSTANT {
