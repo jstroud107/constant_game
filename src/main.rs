@@ -5,7 +5,7 @@ use std::io;
 //loop this until you want to exit
 
 //This is the constant
-const CONSTANT: u16 = 6174;
+const CONSTANT: u32 = 6174;
 
 //This breaks the number into a vector to get the high and low digits
 fn breaking(n:u16) -> Vec<u32> {
@@ -46,6 +46,7 @@ fn main() {
         //If they do not enter numbers or the correct amount or letters than have it ask again
         println!("This is your starting number: {}", entered_number);
 
+        //This section has to keep repeating itself until it gets the right iteration
         let mut high = breaking(entered_number);
         high.sort_by(|a,b| b.cmp(a));
 
@@ -55,11 +56,17 @@ fn main() {
         let x = combining(high);
         let y = combining(low);
 
-        println!("{}", x);
-        println!("{}", y);
+        let num_high: u32 = x.parse().unwrap();
+        let num_low: u32 = y.parse().unwrap();
+
+        let value: u32 = num_high - num_low;
+
+        println!("{}", value);
+
+        //This is the end of the iteration part which I'm going to make into a function
 
 
-        if entered_number == CONSTANT {
+        if value == CONSTANT {
             println!("This is correct. You won the game.");
             break;
         } else {
